@@ -30,5 +30,104 @@ struct node{
 
 
 int between_days(struct node *date1head, struct node *date2head){
-	return -1;
+	if (date1head == NULL || date2head == NULL)
+	{
+		return -1;
+	}
+	int dob1[8], dob2[8],i=0,da1,da2,m1,m2,y1,y2,diff=0,mon;
+	int month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	struct node *temp1,*temp2;
+	temp1 = date1head;
+	temp2 = date2head;
+	while (i<8)
+	{
+		dob1[i] =temp1->data;
+		dob2[i] = temp2->data;
+		temp1 = temp1->next;
+		temp2 = temp2->next;
+		i++;
+	}
+	da1 = (dob1[0] ) * 10 + (dob1[1]);
+	da2 = (dob2[0]  ) * 10 + (dob2[1]);
+	m1 = (dob1[2] ) * 10 + (dob1[3] );
+	m2 = (dob2[2] ) * 10 + (dob2[3] );
+	y1 = (dob1[4] ) * 1000 + (dob1[5] ) * 100 + (dob1[6]) * 10 + (dob1[7]);
+	y2 = (dob2[4] ) * 1000 + (dob2[5] ) * 100 + (dob2[6]) * 10 + (dob2[7]);
+	if (y2 == y1)
+	{
+		if (m2 == m1)
+		{
+			if (da2 > da1)
+			{
+
+				diff = da2 - da1-1;
+				return diff;
+			}
+			else
+			{
+				diff = da1 - da2-1;
+				return diff;
+			}
+		}
+		else
+		{
+			if (m1 > m2)
+			{
+				while (m1!= m2)
+				{
+					 mon = month[m2];
+					m2++;	
+				}
+				diff = mon  + (da1 - da2-1);
+				return diff;
+			}
+			else
+			{
+				while (m2 != m1)
+				{
+					mon = month[m1];
+					m1++;
+				}
+				diff = mon + (da2 - da1 - 1);
+				return diff;
+			}
+		}
+	}
+	else
+	{
+		if (y1 > y2)
+		{
+			diff = ((y1 - y2) * 365) + ((m1 - m2) * 30) + da1 - da2-1;
+			while (y2 != y1)
+			{
+				if (y1 % 4 ==0)
+				{
+					diff = diff + 1;
+				}
+				y1++;
+			}
+			if (y2 % 4 == 0 && m2 > 2)
+			{
+				diff = diff + 1;
+			}
+			return diff;
+		}
+		else
+		{
+			diff = ((y2 - y1) * 365) + ((m2 - m1) * 30) + da2 - da1-1;
+			while (y1 != y2)
+			{
+				if (y2 % 4 == 0)
+				{
+					diff = diff + 1;
+				}
+				y2++;
+			}
+			if (y1 % 4 == 0 && m1 > 2)
+			{
+				diff = diff + 1;
+			}
+			return diff;
+		}
+	}
 }
